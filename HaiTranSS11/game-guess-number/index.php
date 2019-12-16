@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+//session_destroy();
 define("DEFAULT_LOW", 1);
 define("DEFAULT_HIGH", 100);
 
@@ -13,6 +13,12 @@ if (!isset($_SESSION["low"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SESSION["low"] >= $_SESSION["high"]) {
+        echo "You're kidding me? Get out the here";
+        $reload = true;
+        unset($_POST["isRight"]);
+        session_destroy();
+    }
     if ($_POST["isRight"] == "true") {
         echo "<br>";
         echo "Yeah! I did it. Please click on URL and enter if you want to try again!";
@@ -22,8 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     elseif ($_POST["isRight"] == "false-lower") {
         $_SESSION["high"] = --$_SESSION["guessNumber"];
-    } else
+    } else {
         $_SESSION["low"] = ++$_SESSION["guessNumber"];
+    }
 }
 
 function guessNumber($low, $high)
@@ -32,6 +39,8 @@ function guessNumber($low, $high)
 }
 
 $_SESSION["guessNumber"] = guessNumber($_SESSION["low"], $_SESSION["high"]);
+
+//var_dump($_SESSION["low"], $_SESSION["high"], $_SESSION["guessNumber"]);
 
 ?>
 
