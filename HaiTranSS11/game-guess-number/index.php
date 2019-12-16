@@ -9,6 +9,7 @@ $reload = false;
 if (!isset($_SESSION["low"])) {
     $_SESSION["low"] = DEFAULT_LOW;
     $_SESSION["high"] = DEFAULT_HIGH;
+    unset($_POST["isRight"]);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<br>";
         echo "Yeah! I did it. Please click on URL and enter if you want to try again!";
         $reload = true;
+        unset($_POST["isRight"]);
         session_destroy();
     }
     elseif ($_POST["isRight"] == "false-lower") {
